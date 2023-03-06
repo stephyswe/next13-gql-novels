@@ -6,15 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma:studio": "npx dotenv -e .env.local -- prisma studio",
+    "db:seed": "npx dotenv -e .env.local -- prisma db seed",
+    "prisma:generate": "npx dotenv -e .env.local -- prisma generate"
   },
   "dependencies": {
+    "@apollo/server": "^4.4.1",
+    "@as-integrations/next": "^1.2.0",
     "@prisma/client": "^4.11.0",
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
+    "graphql": "^16.6.0",
     "next": "13.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",

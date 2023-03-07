@@ -1,5 +1,17 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Prisma
+
+Update the `DATABASE_URL` in `.env` to point to your database.
+
+Update Schema in `prisma/schema.prisma` to match your database.
+Run `npx prisma migrate dev --name init` to create the tables in your database.
+Run db push to push your schema to the database.
+
+Run `npx prisma generate` to generate the Prisma Client.
+Run `npx prisma studio` to open the Prisma Studio.
+
+
 ## Getting Started
 
 First, run the development server:

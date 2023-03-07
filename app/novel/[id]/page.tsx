@@ -1,14 +1,36 @@
 'use client'
-import { GET_NOVEL } from '@/graphql/queries'
-import { INovel } from '@/typings'
-import { useQuery } from '@apollo/client'
-import React from 'react'
+import React, { useState } from 'react'
 
-const Novel = ({ params: { id } }: { params: { id: string } }) => {
+import { useMutation, useQuery } from '@apollo/client'
+import { GET_NOVEL } from '@/graphql/queries'
+import { ADD_AUTHOR } from '@/graphql/mutations'
+import { INovel } from '@/typings'
+
+type Props = {
+  params: {
+    id: string
+  }
+}
+
+const Novel = ({ params: { id } }: Props) => {
+  const [name, setName] = useState('')
+
   const { data, loading, error } = useQuery(GET_NOVEL, {
     variables: { id },
   })
+  const [addAuthor] = useMutation(ADD_AUTHOR, {
+    variables: { novelId: id, name },
+    refetchQueries: [{ query: GET_NOVEL, variables: { id } }],
+  })
+
   const novel: INovel = data?.novel
+
+  const handleAddAuthor = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (name === '') return alert('Please enter author name')
+    addAuthor({ variables: { novelId: id, name } })
+    setName('')
+  }
 
   if (loading)
     return (
@@ -32,7 +54,7 @@ const Novel = ({ params: { id } }: { params: { id: string } }) => {
         <div className="p-2 flex flex-col">
           <h1 className="text-4xl ">Title : {novel.title}</h1>
 
-          <div className="flex divide-x-2 space-x-4">
+          <div className="flex items-center gap-2">
             {novel?.authors?.map((author) => (
               <h2 key={author.id} className="font-bold">
                 {author.name}
@@ -49,9 +71,21 @@ const Novel = ({ params: { id } }: { params: { id: string } }) => {
             hic ipsum excepturi earum minus consectetur soluta totam
             temporibus libero.
           </p>
-          <div className="mt-5 space-x-2">
-            <button className="border p-2 rounded-lg">Add Author</button>
-          </div>
+          <form onSubmit={handleAddAuthor} className="mt-5 space-x-2">
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Enter Author"
+              className="bg-transparent border p-2 mx-2"
+            />
+            <button
+              disabled={!name}
+              className="border p-2 rounded-lg disabled:text-gray-500 disabled:cursor-not-allowed"
+            >
+              Add Author
+            </button>
+          </form>
         </div>
       </section>
     </article>

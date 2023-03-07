@@ -1,9 +1,10 @@
 'use client'
 import React, { useState } from 'react'
+import { AiFillMinusCircle } from 'react-icons/ai'
 
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_NOVEL } from '@/graphql/queries'
-import { ADD_AUTHOR, UPDATE_NOVEL } from '@/graphql/mutations'
+import { ADD_AUTHOR, DELETE_AUTHOR, UPDATE_NOVEL } from '@/graphql/mutations'
 import { INovel } from '@/typings'
 
 type Props = {
@@ -25,6 +26,10 @@ const Novel = ({ params: { id } }: Props) => {
   })
   const [addAuthor] = useMutation(ADD_AUTHOR, {
     variables: { novelId: id, name },
+    refetchQueries: [{ query: GET_NOVEL, variables: { id } }],
+  })
+
+  const [deleteAuthor] = useMutation(DELETE_AUTHOR, {
     refetchQueries: [{ query: GET_NOVEL, variables: { id } }],
   })
 
@@ -74,9 +79,19 @@ const Novel = ({ params: { id } }: Props) => {
 
           <div className="flex items-center gap-2">
             {novel?.authors?.map((author) => (
-              <h2 key={author.id} className="font-bold">
-                {author.name}
-              </h2>
+              <div key={author.id} className="flex items-center gap-2">
+                <h2 className="font-bold">{author?.name}</h2>
+                <AiFillMinusCircle
+                  onClick={() =>
+                    deleteAuthor({
+                      variables: {
+                        id: author.id,
+                      },
+                    })
+                  }
+                  color="yellow"
+                />
+              </div>
             ))}
           </div>
           <p className="text-slate-400 ">

@@ -27,6 +27,16 @@ export const ADD_AUTHOR = gql`
   }
 `
 
+export const DELETE_AUTHOR = gql`
+  mutation Mutation($id: ID!) {
+    deleteAuthor(id: $id) {
+      id
+      name
+      novelId
+    }
+  }
+`
+
 export const UPDATE_NOVEL = gql`
   mutation UpdateNovel($id: ID!, $title: String, $image: String) {
     updateNovel(id: $id, title: $title, image: $image) {

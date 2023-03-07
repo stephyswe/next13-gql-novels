@@ -28,6 +28,14 @@ const typeDefs = `#graphql
 	novel(id: ID!): Novel 
     novels: [Novel]
   }
+
+  type Mutation {
+    addNovel (image:String, title:String) : Novel
+    updateNovel(id:ID!, title:String, image:String) : Novel
+    deleteNovel(id:ID!) : Novel
+    addAuthor(novelId:ID!, name:String): Author
+    deleteAuthor(id:ID!): Author
+  }
 `;
 
 const resolvers = {
@@ -53,6 +61,58 @@ const resolvers = {
       return await context.prisma.author.findMany({
         where: {
           novelId: parent.id,
+        },
+      });
+    },
+  },
+  Mutation: {
+    // add novel
+    addNovel: async (_parent: any, args: any, context: Context) => {
+      return await context.prisma.novel.create({
+        data: {
+          title: args.title,
+          image: args.image,
+        },
+      });
+    },
+    // update novel
+    updateNovel: async (_parent: any, args: any, context: Context) => {
+      return await context.prisma.novel.update({
+        where: {
+          id: args.id,
+        },
+        data: {
+          title: args.title,
+          image: args.image,
+        },
+      });
+    },
+
+    // delete novel
+    deleteNovel: async (_parent: any, args: any, context: Context) => {
+      return await context.prisma.novel.delete({
+        where: {
+          id: args.id,
+        },
+      });
+    },
+
+    // Author Mutations
+
+    // add author
+    addAuthor: async (_parent: any, args: any, context: Context) => {
+      return await context.prisma.author.create({
+        data: {
+          novelId: args.novelId,
+          name: args.name,
+        },
+      });
+    },
+    // delete author
+    deleteAuthor: async (_parent: any, args: any, context: Context) => {
+      return await context.prisma.author.delete({
+        where: {
+          id: args.id,
         },
       });
     },

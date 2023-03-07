@@ -1,3 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+	background-color: #18181b;
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;

@@ -1,6 +1,7 @@
 'use client'
+import Link from 'next/link'
 import { INovel } from '@/typings'
-import React from 'react'
+import { BASE_URL } from '@/config'
 
 type Props = {
   novel: INovel
@@ -35,9 +36,12 @@ export const Novel = ({ novel }: Props) => {
           Authors :{novel?.authors.length}
         </p>
       </div>
-      <button className="bg-orange-500 mt-5 p-2 rounded-lg">
+      <Link
+        href={`${BASE_URL}/novel/${novel.id}`}
+        className="bg-orange-500 mt-5 p-2 rounded-lg"
+      >
         Read More
-      </button>
+      </Link>
     </article>
   )
 }

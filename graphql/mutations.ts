@@ -46,3 +46,13 @@ export const UPDATE_NOVEL = gql`
     }
   }
 `
+
+export const DELETE_NOVEL = gql`
+  mutation deleteNovel($id: ID!) {
+    deleteNovel(id: $id) {
+      id
+      title
+      image
+    }
+  }
+`

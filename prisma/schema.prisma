@@ -22,7 +22,7 @@ model Novel {
 model Author {
   id        String   @id @default(uuid())
   name      String
-  novel     Novel?   @relation(fields: [novelId], references: [id])
+  novel     Novel?   @relation(fields: [novelId], references: [id], onDelete: Cascade)
   novelId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

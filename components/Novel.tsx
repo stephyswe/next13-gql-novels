@@ -1,13 +1,20 @@
 'use client'
+import { useMutation } from '@apollo/client'
 import Link from 'next/link'
 import { INovel } from '@/typings'
 import { BASE_URL } from '@/config'
+import { DELETE_NOVEL } from '../graphql/mutations'
+import { GET_NOVELS } from '../graphql/queries'
 
 type Props = {
   novel: INovel
 }
 
 export const Novel = ({ novel }: Props) => {
+  const [deleteNovel] = useMutation(DELETE_NOVEL, {
+    refetchQueries: [{ query: GET_NOVELS }],
+  })
+
   return (
     <article className="flex flex-col p-4  bg-slate-200 dark:bg-zinc-800 hover:scale-110 shadow-sm hover:shadow-lg hover:bg-slate-300 transition duration-300 ease-out text-white ">
       {/* image */}
@@ -42,6 +49,12 @@ export const Novel = ({ novel }: Props) => {
       >
         Read More
       </Link>
+      <button
+        onClick={() => deleteNovel({ variables: { id: novel.id } })}
+        className="bg-red-500 mt-5 p-2 rounded-lg"
+      >
+        Delete
+      </button>
     </article>
   )
 }
